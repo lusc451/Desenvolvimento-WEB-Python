@@ -13,6 +13,10 @@ def about():
 def contact():
     return render_template('contact.html')
 
+@app.route('/services')
+def services():
+    return render_template('services.html')
+
 
 
 app.run(debug=True)
