@@ -1,11 +1,20 @@
 <!DOCTYPE html>
-<html>
-    <body>
-        <h1>Olá, Mundo! {{ uma_variavel_no_html }}</h1>
-        <p>{{ teste }}</p>
-        <ul>
-            <li><a href="pag1">Rota nº1</a></li>
-            <li><a href="pag2">Rota nº2</a></li>
-        </ul>
-    </body>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>BEM VINDO A PÁGINA</h1>
+    {% if uma_variavel_no_html %}
+        <p>Olá, {{ uma_variavel_no_html }}, tudo bem?</p>
+    {% else %}
+        <p> usuário não autenticado </p>
+    {% endif %}
+
+    {% for i in range(11) %}
+        {{ i }}
+    {% endfor %}
+</body>
 </html>
