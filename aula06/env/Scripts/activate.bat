@@ -8,7 +8,7 @@ if defined _OLD_CODEPAGE (
     "%SystemRoot%\System32\chcp.com" 65001 > nul
 )
 
-set VIRTUAL_ENV=C:\Users\User\Desktop\Arquivos\FATEC\FATEC4Semestre\programacao_web\aula06\env
+set VIRTUAL_ENV=C:\Users\Pref Sales Oliveira\OneDrive - Fatec Centro Paula Souza\4º SEM\Desenvolvimento WEB\aula06\env
 
 if not defined PROMPT set PROMPT=$P$G
 
