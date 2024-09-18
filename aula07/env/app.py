@@ -13,4 +13,4 @@ def calcular_imc():
     imc = peso / (altura * altura)
     return str(imc)
 
-app.run()    
+app.run()
