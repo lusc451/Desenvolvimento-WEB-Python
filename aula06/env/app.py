@@ -8,7 +8,9 @@ def index():
 
 @app.route('/calcular_imc_post', methods=['POST'])
 def calcular_imc():
-    altura = request.form['txt_altura']
-    return "Deu certo!"   
+    altura = float(request.form['txt_altura'])
+    peso = float(request.form['txt_peso'])
+    imc = peso / (altura * altura)
+    return imc  
 
 app.run()    
