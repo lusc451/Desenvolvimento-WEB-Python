@@ -11,6 +11,6 @@ def calcular_imc():
     altura = float(request.form['txt_altura'])
     peso = float(request.form['txt_peso'])
     imc = peso / (altura * altura)
-    return imc  
+    return str(imc)
 
 app.run()    
