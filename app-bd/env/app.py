@@ -19,7 +19,7 @@ except:
     print("Ocorreu um erro ao se conectar com o banco de dados.")
 if conn and conn.is_connected():
     with conn.cursor() as cursor:
-        result = cursor.execute("SELECT * FROM joaovictor_tbusuario;")
+        result = cursor.execute("SELECT * FROM LucasAntunes_tbusuario;")
         rows = cursor.fetchall()
         for row in rows:
             print(row)
