@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Cadastro de Disciplinas</h2>
+<form method="POST" action="/disciplinas">
+    <div class="mb-3">
+        <label for="nome" class="form-label">Nome da Disciplina</label>
+        <input type="text" class="form-control" id="nome" name="nome" required>
+    </div>
+    <div class="mb-3">
+        <label for="carga_horaria" class="form-label">Carga Horária</label>
+        <input type="number" class="form-control" id="carga_horaria" name="carga_horaria" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Salvar</button>
+</form>
+
+<h3 class="mt-4">Disciplinas Cadastradas</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Carga Horária</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for disciplina in disciplinas %}
+        <tr>
+            <td>{{ disciplina.id }}</td>
+            <td>{{ disciplina.nome }}</td>
+            <td>{{ disciplina.carga_horaria }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
