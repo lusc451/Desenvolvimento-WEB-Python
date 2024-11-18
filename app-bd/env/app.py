@@ -6,6 +6,7 @@ import os
 load_dotenv() # Pegando variáveis de ambiente
 app = Flask(__name__)
 
+
 # Testando conexão com o banco de dados
 try:
     conn = mysql.connector.connect(

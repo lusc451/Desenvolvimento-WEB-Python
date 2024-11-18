@@ -1,25 +1,30 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>Cadastro de Cursos</h2>
-<form method="POST" action="/cursos">
-    <div class="mb-3">
-        <label for="nome" class="form-label">Nome do Curso</label>
-        <input type="text" class="form-control" id="nome" name="nome" required>
-    </div>
-    <div class="mb-3">
-        <label for="disciplinas" class="form-label">Disciplinas</label>
-        <select multiple class="form-control" id="disciplinas" name="disciplinas">
-            {% for disciplina in disciplinas %}
-            <option value="{{ disciplina.id }}">{{ disciplina.nome }}</option>
-            {% endfor %}
-        </select>
-    </div>
-    <button type="submit" class="btn btn-primary">Salvar</button>
-</form>
+<h2 class="mb-4">Cadastro de Cursos</h2>
 
-<h3 class="mt-4">Cursos Cadastrados</h3>
-<table class="table">
+<div class="card mb-4">
+    <div class="card-body">
+        <form method="POST" action="/cursos">
+            <div class="mb-3">
+                <label for="nome" class="form-label">Nome do Curso</label>
+                <input type="text" class="form-control" id="nome" name="nome" required>
+            </div>
+            <div class="mb-3">
+                <label for="disciplinas" class="form-label">Disciplinas</label>
+                <select multiple class="form-select" id="disciplinas" name="disciplinas">
+                    {% for disciplina in disciplinas %}
+                    <option value="{{ disciplina.id }}">{{ disciplina.nome }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Salvar</button>
+        </form>
+    </div>
+</div>
+
+<h3>Cursos Cadastrados</h3>
+<table class="table table-striped">
     <thead>
         <tr>
             <th>ID</th>
