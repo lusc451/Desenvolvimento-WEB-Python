@@ -3,14 +3,12 @@
 {% block content %}
 <div class="text-center">
     <h1 class="mb-4">Bem-vindo ao Sistema Acadêmico</h1>
-    <p>Selecione uma das opções abaixo para gerenciar o sistema:</p>
-    <div class="d-flex justify-content-center mt-4">
-        <div class="btn-group">
-            <a href="/disciplinas" class="btn btn-primary btn-lg">Cadastro de Disciplinas</a>
-            <a href="/cursos" class="btn btn-secondary btn-lg">Cadastro de Cursos</a>
-            <a href="/professores" class="btn btn-success btn-lg">Cadastro de Professores</a>
-            <a href="/alunos" class="btn btn-warning btn-lg">Cadastro de Alunos</a>
-        </div>
+    <p class="mb-4">Selecione uma das opções abaixo para gerenciar o sistema:</p>
+    <div class="d-flex justify-content-center flex-wrap">
+        <a href="/disciplinas" class="btn btn-primary btn-custom mx-2 my-2">Cadastro de Disciplinas</a>
+        <a href="/cursos" class="btn btn-secondary btn-custom mx-2 my-2">Cadastro de Cursos</a>
+        <a href="/professores" class="btn btn-success btn-custom mx-2 my-2">Cadastro de Professores</a>
+        <a href="/alunos" class="btn btn-warning btn-custom mx-2 my-2">Cadastro de Alunos</a>
     </div>
 </div>
 {% endblock %}

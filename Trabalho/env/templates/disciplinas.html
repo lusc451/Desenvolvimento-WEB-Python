@@ -3,23 +3,21 @@
 {% block content %}
 <h2 class="mb-4">Cadastro de Disciplinas</h2>
 
-<div class="card mb-4">
-    <div class="card-body">
-        <form method="POST" action="/disciplinas">
-            <div class="mb-3">
-                <label for="nome" class="form-label">Nome da Disciplina</label>
-                <input type="text" class="form-control" id="nome" name="nome" required>
-            </div>
-            <div class="mb-3">
-                <label for="carga_horaria" class="form-label">Carga Horária</label>
-                <input type="number" class="form-control" id="carga_horaria" name="carga_horaria" required>
-            </div>
-            <button type="submit" class="btn btn-primary">Salvar</button>
-        </form>
-    </div>
+<div class="form-container">
+    <form method="POST" action="/disciplinas">
+        <div class="mb-3">
+            <label for="nome" class="form-label">Nome da Disciplina</label>
+            <input type="text" class="form-control" id="nome" name="nome" required>
+        </div>
+        <div class="mb-3">
+            <label for="carga_horaria" class="form-label">Carga Horária</label>
+            <input type="number" class="form-control" id="carga_horaria" name="carga_horaria" required>
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Salvar</button>
+    </form>
 </div>
 
-<h3>Disciplinas Cadastradas</h3>
+<h3 class="mt-4">Disciplinas Cadastradas</h3>
 <table class="table table-striped">
     <thead>
         <tr>
