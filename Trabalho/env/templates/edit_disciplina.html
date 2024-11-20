@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card mb-4">
+    <div class="card-header bg-primary text-white">
+        <h4 class="card-title mb-0">Editar Disciplina</h4>
+    </div>
+    <div class="card-body">
+        <form method="POST" action="/disciplinas/edit/{{ disciplina.id }}">
+            <div class="mb-3">
+                <label for="nome" class="form-label">Nome da Disciplina</label>
+                <input type="text" class="form-control" id="nome" name="nome" value="{{ disciplina.nome }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="carga_horaria" class="form-label">Carga Horária</label>
+                <input type="number" class="form-control" id="carga_horaria" name="carga_horaria" value="{{ disciplina.carga_horaria }}" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+            <a href="/disciplinas" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

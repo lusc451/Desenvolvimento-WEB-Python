@@ -42,6 +42,7 @@ def disciplinas():
     )
     cursor = conn.cursor(dictionary=True)
 
+    # Inserir nova disciplina
     if request.method == 'POST':
         nome = request.form['nome']
         carga_horaria = request.form['carga_horaria']
@@ -51,11 +52,62 @@ def disciplinas():
         conn.close()
         return redirect(url_for('disciplinas'))
 
-    cursor.execute("SELECT * FROM LucasAntunes_tbdisciplinas")
+    # Buscar disciplinas (opcional, filtro por nome)
+    search = request.args.get('search', '')
+    if search:
+        cursor.execute("SELECT * FROM LucasAntunes_tbdisciplinas WHERE nome LIKE %s", (f"%{search}%",))
+    else:
+        cursor.execute("SELECT * FROM LucasAntunes_tbdisciplinas")
     disciplinas = cursor.fetchall()
+
     cursor.close()
     conn.close()
-    return render_template('disciplinas.html', disciplinas=disciplinas)
+    return render_template('disciplinas.html', disciplinas=disciplinas, search=search)
+
+
+@app.route('/disciplinas/edit/<int:id>', methods=['GET', 'POST'])
+def edit_disciplina(id):
+    conn = mysql.connector.connect(
+        user=os.getenv('MYSQL_USER'),
+        password=os.getenv('MYSQL_PASSWORD'),
+        host=os.getenv('MYSQL_HOST'),
+        port=os.getenv('MYSQL_PORT'),
+        database=os.getenv('MYSQL_DATABASE')
+    )
+    cursor = conn.cursor(dictionary=True)
+
+    if request.method == 'POST':
+        nome = request.form['nome']
+        carga_horaria = request.form['carga_horaria']
+        cursor.execute("UPDATE LucasAntunes_tbdisciplinas SET nome = %s, carga_horaria = %s WHERE id = %s", (nome, carga_horaria, id))
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return redirect(url_for('disciplinas'))
+
+    cursor.execute("SELECT * FROM LucasAntunes_tbdisciplinas WHERE id = %s", (id,))
+    disciplina = cursor.fetchone()
+    cursor.close()
+    conn.close()
+    return render_template('edit_disciplina.html', disciplina=disciplina)
+
+
+@app.route('/disciplinas/delete/<int:id>', methods=['POST'])
+def delete_disciplina(id):
+    conn = mysql.connector.connect(
+        user=os.getenv('MYSQL_USER'),
+        password=os.getenv('MYSQL_PASSWORD'),
+        host=os.getenv('MYSQL_HOST'),
+        port=os.getenv('MYSQL_PORT'),
+        database=os.getenv('MYSQL_DATABASE')
+    )
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM LucasAntunes_tbdisciplinas WHERE id = %s", (id,))
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return redirect(url_for('disciplinas'))
+
 
 # Cadastro de Cursos
 @app.route('/cursos', methods=['GET', 'POST'])
