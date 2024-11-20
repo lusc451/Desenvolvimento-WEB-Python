@@ -1,54 +1,75 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>Cadastro de Professores</h2>
-<form method="POST" action="/professores">
-    <div class="mb-3">
-        <label for="nome" class="form-label">Nome</label>
-        <input type="text" class="form-control" id="nome" name="nome" required>
+<!-- Bloco de Busca -->
+<form class="mb-4" method="GET" action="/professores">
+    <div class="input-group">
+        <input type="text" class="form-control" name="search" placeholder="Buscar professor..." value="{{ search }}">
+        <button class="btn btn-primary" type="submit">Buscar</button>
     </div>
-    <div class="mb-3">
-        <label for="telefone" class="form-label">Telefone</label>
-        <input type="text" class="form-control" id="telefone" name="telefone">
-    </div>
-    <div class="mb-3">
-        <label for="usuario" class="form-label">Usuário</label>
-        <input type="text" class="form-control" id="usuario" name="usuario" required>
-    </div>
-    <div class="mb-3">
-        <label for="senha" class="form-label">Senha</label>
-        <input type="password" class="form-control" id="senha" name="senha" required>
-    </div>
-    <div class="mb-3">
-        <label for="disciplinas" class="form-label">Disciplinas</label>
-        <select multiple class="form-control" id="disciplinas" name="disciplinas">
-            {% for disciplina in disciplinas %}
-            <option value="{{ disciplina.id }}">{{ disciplina.nome }}</option>
-            {% endfor %}
-        </select>
-    </div>
-    <button type="submit" class="btn btn-primary">Salvar</button>
 </form>
 
-<h3 class="mt-4">Professores Cadastrados</h3>
-<table class="table">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Nome</th>
-            <th>Telefone</th>
-            <th>Disciplinas</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for professor in professores %}
-        <tr>
-            <td>{{ professor.id }}</td>
-            <td>{{ professor.nome }}</td>
-            <td>{{ professor.telefone }}</td>
-            <td>{{ professor.disciplinas }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+<!-- Bloco do Formulário -->
+<div class="card mb-4">
+    <div class="card-header bg-primary text-white">
+        <h4 class="card-title mb-0">Cadastro de Professores</h4>
+    </div>
+    <div class="card-body">
+        <form method="POST" action="/professores">
+            <div class="mb-3">
+                <label for="nome" class="form-label">Nome</label>
+                <input type="text" class="form-control" id="nome" name="nome" required>
+            </div>
+            <div class="mb-3">
+                <label for="telefone" class="form-label">Telefone</label>
+                <input type="text" class="form-control" id="telefone" name="telefone">
+            </div>
+            <div class="mb-3">
+                <label for="usuario" class="form-label">Usuário</label>
+                <input type="text" class="form-control" id="usuario" name="usuario" required>
+            </div>
+            <div class="mb-3">
+                <label for="senha" class="form-label">Senha</label>
+                <input type="password" class="form-control" id="senha" name="senha" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Salvar</button>
+        </form>
+    </div>
+</div>
+
+<!-- Bloco dos Registros -->
+<div class="card">
+    <div class="card-header bg-primary text-white">
+        <h4 class="card-title mb-0">Professores Cadastrados</h4>
+    </div>
+    <div class="card-body">
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Telefone</th>
+                    <th>Usuário</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for professor in professores %}
+                <tr>
+                    <td>{{ professor.id }}</td>
+                    <td>{{ professor.nome }}</td>
+                    <td>{{ professor.telefone }}</td>
+                    <td>{{ professor.usuario }}</td>
+                    <td>
+                        <a href="/professores/edit/{{ professor.id }}" class="btn btn-sm btn-warning">Editar</a>
+                        <form method="POST" action="/professores/delete/{{ professor.id }}" style="display: inline;">
+                            <button class="btn btn-sm btn-danger" type="submit">Excluir</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 {% endblock %}

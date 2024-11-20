@@ -1,56 +1,85 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>Cadastro de Alunos</h2>
-<form method="POST" action="/alunos">
-    <div class="mb-3">
-        <label for="nome" class="form-label">Nome</label>
-        <input type="text" class="form-control" id="nome" name="nome" required>
+<!-- Bloco de Busca -->
+<form class="mb-4" method="GET" action="/alunos">
+    <div class="input-group">
+        <input type="text" class="form-control" name="search" placeholder="Buscar aluno..." value="{{ search }}">
+        <button class="btn btn-primary" type="submit">Buscar</button>
     </div>
-    <div class="mb-3">
-        <label for="cpf" class="form-label">CPF</label>
-        <input type="text" class="form-control" id="cpf" name="cpf" required>
-    </div>
-    <div class="mb-3">
-        <label for="endereco" class="form-label">Endereço</label>
-        <textarea class="form-control" id="endereco" name="endereco" required></textarea>
-    </div>
-    <div class="mb-3">
-        <label for="senha" class="form-label">Senha</label>
-        <input type="password" class="form-control" id="senha" name="senha" required>
-    </div>
-    <div class="mb-3">
-        <label for="curso" class="form-label">Curso</label>
-        <select class="form-control" id="curso" name="curso">
-            {% for curso in cursos %}
-            <option value="{{ curso.id }}">{{ curso.nome }}</option>
-            {% endfor %}
-        </select>
-    </div>
-    <button type="submit" class="btn btn-primary">Salvar</button>
 </form>
 
-<h3 class="mt-4">Alunos Cadastrados</h3>
-<table class="table">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Nome</th>
-            <th>CPF</th>
-            <th>Endereço</th>
-            <th>Curso</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for aluno in alunos %}
-        <tr>
-            <td>{{ aluno.id }}</td>
-            <td>{{ aluno.nome }}</td>
-            <td>{{ aluno.cpf }}</td>
-            <td>{{ aluno.endereco }}</td>
-            <td>{{ aluno.curso }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+<!-- Bloco do Formulário -->
+<div class="card mb-4">
+    <div class="card-header bg-primary text-white">
+        <h4 class="card-title mb-0">Cadastro de Alunos</h4>
+    </div>
+    <div class="card-body">
+        <form method="POST" action="/alunos">
+            <div class="mb-3">
+                <label for="nome" class="form-label">Nome</label>
+                <input type="text" class="form-control" id="nome" name="nome" required>
+            </div>
+            <div class="mb-3">
+                <label for="cpf" class="form-label">CPF</label>
+                <input type="text" class="form-control" id="cpf" name="cpf" required>
+            </div>
+            <div class="mb-3">
+                <label for="endereco" class="form-label">Endereço</label>
+                <textarea class="form-control" id="endereco" name="endereco" rows="2" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="senha" class="form-label">Senha</label>
+                <input type="password" class="form-control" id="senha" name="senha" required>
+            </div>
+            <div class="mb-3">
+                <label for="curso_id" class="form-label">Curso</label>
+                <select class="form-select" id="curso_id" name="curso_id" required>
+                    {% for curso in cursos %}
+                    <option value="{{ curso.id }}">{{ curso.nome }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Salvar</button>
+        </form>
+    </div>
+</div>
+
+<!-- Bloco dos Registros -->
+<div class="card">
+    <div class="card-header bg-primary text-white">
+        <h4 class="card-title mb-0">Alunos Cadastrados</h4>
+    </div>
+    <div class="card-body">
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>CPF</th>
+                    <th>Endereço</th>
+                    <th>Curso</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for aluno in alunos %}
+                <tr>
+                    <td>{{ aluno.id }}</td>
+                    <td>{{ aluno.nome }}</td>
+                    <td>{{ aluno.cpf }}</td>
+                    <td>{{ aluno.endereco }}</td>
+                    <td>{{ aluno.curso_nome }}</td>
+                    <td>
+                        <a href="/alunos/edit/{{ aluno.id }}" class="btn btn-sm btn-warning">Editar</a>
+                        <form method="POST" action="/alunos/delete/{{ aluno.id }}" style="display: inline;">
+                            <button class="btn btn-sm btn-danger" type="submit">Excluir</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 {% endblock %}
