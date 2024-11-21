@@ -458,46 +458,52 @@ def alunos():
     )
     cursor = conn.cursor(dictionary=True)
 
-    # Inserir novo aluno
-    if request.method == 'POST':
-        nome = request.form['nome']
-        cpf = request.form['cpf']
-        endereco = request.form['endereco']
-        senha = request.form['senha']
-        curso_id = request.form['curso_id']
-        cursor.execute(
-            "INSERT INTO LucasAntunes_tbalunos (nome, cpf, endereco, senha, curso_id) VALUES (%s, %s, %s, %s, %s)",
-            (nome, cpf, endereco, senha, curso_id)
-        )
-        conn.commit()
-        cursor.close()
-        conn.close()
-        return redirect(url_for('alunos'))
+    try:
+        if request.method == 'POST':
+            # Dados do formulário
+            nome = request.form['nome']
+            cpf = request.form['cpf']
+            endereco = request.form['endereco']
+            senha = request.form['senha']
+            curso_id = request.form['curso_id']
 
-    # Buscar alunos
-    search = request.args.get('search', '')
-    if search:
+            # Validação: Verificar se o curso existe
+            cursor.execute("SELECT id FROM LucasAntunes_tbcursos WHERE id = %s", (curso_id,))
+            curso_existe = cursor.fetchone()
+            if not curso_existe:
+                return "Erro: O curso selecionado não existe.", 400
+
+            # Inserir aluno no banco de dados
+            cursor.execute(
+                "INSERT INTO LucasAntunes_tbalunos (nome, cpf, endereco, senha, curso_id) VALUES (%s, %s, %s, %s, %s)",
+                (nome, cpf, endereco, senha, curso_id)
+            )
+            conn.commit()  # Confirmar transação
+
+            return redirect(url_for('alunos'))
+
+        # Consulta para listar alunos
         cursor.execute("""
-            SELECT a.id, a.nome, a.cpf, a.endereco, c.nome AS curso_nome
-            FROM LucasAntunes_tbalunos AS a
-            LEFT JOIN LucasAntunes_tbcursos AS c ON a.curso_id = c.id
-            WHERE a.nome LIKE %s
-        """, (f"%{search}%",))
-    else:
-        cursor.execute("""
-            SELECT a.id, a.nome, a.cpf, a.endereco, c.nome AS curso_nome
+            SELECT 
+                a.id, a.nome, a.cpf, a.endereco, c.nome AS curso_nome
             FROM LucasAntunes_tbalunos AS a
             LEFT JOIN LucasAntunes_tbcursos AS c ON a.curso_id = c.id
         """)
-    alunos = cursor.fetchall()
+        alunos = cursor.fetchall()
 
-    # Consultar lista de cursos para o formulário
-    cursor.execute("SELECT * FROM LucasAntunes_tbcursos")
-    cursos = cursor.fetchall()
+        # Consultar lista de cursos para o formulário
+        cursor.execute("SELECT * FROM LucasAntunes_tbcursos")
+        cursos = cursor.fetchall()
 
-    cursor.close()
-    conn.close()
-    return render_template('alunos.html', alunos=alunos, cursos=cursos, search=search)
+    except mysql.connector.Error as e:
+        conn.rollback()  # Reverter transação em caso de erro
+        return f"Erro ao acessar alunos: {e}", 400
+    finally:
+        cursor.close()  # Garantir que o cursor seja fechado
+        conn.close()  # Garantir que a conexão seja fechada
+
+    return render_template('alunos.html', alunos=alunos, cursos=cursos)
+
 
 @app.route('/alunos/edit/<int:id>', methods=['GET', 'POST'])
 def edit_aluno(id):
