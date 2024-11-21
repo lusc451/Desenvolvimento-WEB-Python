@@ -81,9 +81,15 @@
                     </td>
                     <td>
                         <a href="/professores/edit/{{ professor.professor_id }}" class="btn btn-sm btn-warning">Editar</a>
-                        <form method="POST" action="/professores/delete/{{ professor.professor_id }}" style="display: inline;">
-                            <button class="btn btn-sm btn-danger" type="submit">Excluir</button>
-                        </form>
+                        <button 
+                            type="button" 
+                            class="btn btn-sm btn-danger" 
+                            data-bs-toggle="modal" 
+                            data-bs-target="#confirmDeleteModal" 
+                            data-id="{{ professor.professor_id }}" 
+                            data-name="{{ professor.professor_nome }}">
+                            Excluir
+                        </button>
                     </td>
                 </tr>
                 {% endfor %}
@@ -91,4 +97,43 @@
         </table>
     </div>
 </div>
+
+<!-- Modal de confirmação para exclusão -->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmar Exclusão</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Tem certeza de que deseja excluir o professor <strong id="professorName"></strong>?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Não</button>
+                <form id="deleteForm" method="POST" action="">
+                    <button type="submit" class="btn btn-danger">Sim</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Script para configuração do modal -->
+<script>
+    const confirmDeleteModal = document.getElementById('confirmDeleteModal');
+    confirmDeleteModal.addEventListener('show.bs.modal', function (event) {
+        const button = event.relatedTarget;
+        const professorId = button.getAttribute('data-id');
+        const professorName = button.getAttribute('data-name');
+        const deleteForm = document.getElementById('deleteForm');
+        const professorNameElement = document.getElementById('professorName');
+
+        // Atualiza o nome do professor no modal
+        professorNameElement.textContent = professorName;
+
+        // Atualiza a ação do formulário com o ID do professor
+        deleteForm.action = `/professores/delete/${professorId}`;
+    });
+</script>
 {% endblock %}
