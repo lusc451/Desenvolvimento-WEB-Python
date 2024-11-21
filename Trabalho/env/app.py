@@ -179,17 +179,31 @@ def cursos():
             conn.commit()
             return redirect(url_for('cursos'))
 
-        # Buscar cursos e disciplinas associadas
-        cursor.execute("""
-            SELECT 
-                c.id AS curso_id, 
-                c.nome AS curso_nome, 
-                GROUP_CONCAT(d.nome SEPARATOR ', ') AS disciplinas
-            FROM LucasAntunes_tbcursos AS c
-            LEFT JOIN LucasAntunes_tbcursos_disciplinas AS cd ON c.id = cd.curso_id
-            LEFT JOIN LucasAntunes_tbdisciplinas AS d ON cd.disciplina_id = d.id
-            GROUP BY c.id
-        """)
+        # Lógica de busca
+        search = request.args.get('search', '')
+        if search:
+            cursor.execute("""
+                SELECT 
+                    c.id AS curso_id, 
+                    c.nome AS curso_nome, 
+                    GROUP_CONCAT(d.nome SEPARATOR ', ') AS disciplinas
+                FROM LucasAntunes_tbcursos AS c
+                LEFT JOIN LucasAntunes_tbcursos_disciplinas AS cd ON c.id = cd.curso_id
+                LEFT JOIN LucasAntunes_tbdisciplinas AS d ON cd.disciplina_id = d.id
+                WHERE c.nome LIKE %s
+                GROUP BY c.id
+            """, (f"%{search}%",))
+        else:
+            cursor.execute("""
+                SELECT 
+                    c.id AS curso_id, 
+                    c.nome AS curso_nome, 
+                    GROUP_CONCAT(d.nome SEPARATOR ', ') AS disciplinas
+                FROM LucasAntunes_tbcursos AS c
+                LEFT JOIN LucasAntunes_tbcursos_disciplinas AS cd ON c.id = cd.curso_id
+                LEFT JOIN LucasAntunes_tbdisciplinas AS d ON cd.disciplina_id = d.id
+                GROUP BY c.id
+            """)
         cursos = cursor.fetchall()
 
         # Buscar todas as disciplinas disponíveis
@@ -203,7 +217,8 @@ def cursos():
         cursor.close()
         conn.close()
 
-    return render_template('cursos.html', cursos=cursos, disciplinas=disciplinas)
+    return render_template('cursos.html', cursos=cursos, disciplinas=disciplinas, search=search)
+
 
 
 @app.route('/cursos/edit/<int:id>', methods=['GET', 'POST'])
@@ -325,18 +340,33 @@ def professores():
 
         return redirect(url_for('professores'))
 
-    # Buscar professores e as disciplinas associadas
-    cursor.execute("""
-        SELECT 
-            p.id AS professor_id, 
-            p.nome AS professor_nome, 
-            p.telefone, 
-            GROUP_CONCAT(d.nome SEPARATOR ', ') AS disciplinas
-        FROM LucasAntunes_tbprofessores AS p
-        LEFT JOIN LucasAntunes_tbprofessores_disciplinas AS pd ON p.id = pd.professor_id
-        LEFT JOIN LucasAntunes_tbdisciplinas AS d ON pd.disciplina_id = d.id
-        GROUP BY p.id
-    """)
+    # Lógica de busca
+    search = request.args.get('search', '')
+    if search:
+        cursor.execute("""
+            SELECT 
+                p.id AS professor_id, 
+                p.nome AS professor_nome, 
+                p.telefone, 
+                GROUP_CONCAT(d.nome SEPARATOR ', ') AS disciplinas
+            FROM LucasAntunes_tbprofessores AS p
+            LEFT JOIN LucasAntunes_tbprofessores_disciplinas AS pd ON p.id = pd.professor_id
+            LEFT JOIN LucasAntunes_tbdisciplinas AS d ON pd.disciplina_id = d.id
+            WHERE p.nome LIKE %s
+            GROUP BY p.id
+        """, (f"%{search}%",))
+    else:
+        cursor.execute("""
+            SELECT 
+                p.id AS professor_id, 
+                p.nome AS professor_nome, 
+                p.telefone, 
+                GROUP_CONCAT(d.nome SEPARATOR ', ') AS disciplinas
+            FROM LucasAntunes_tbprofessores AS p
+            LEFT JOIN LucasAntunes_tbprofessores_disciplinas AS pd ON p.id = pd.professor_id
+            LEFT JOIN LucasAntunes_tbdisciplinas AS d ON pd.disciplina_id = d.id
+            GROUP BY p.id
+        """)
     professores = cursor.fetchall()
 
     # Buscar todas as disciplinas disponíveis para o formulário
@@ -346,7 +376,7 @@ def professores():
     cursor.close()
     conn.close()
 
-    return render_template('professores.html', professores=professores, disciplinas=disciplinas)
+    return render_template('professores.html', professores=professores, disciplinas=disciplinas, search=search)
 
 @app.route('/professores/edit/<int:id>', methods=['GET', 'POST'])
 def edit_professor(id):
@@ -467,31 +497,33 @@ def alunos():
             senha = request.form['senha']
             curso_id = request.form['curso_id']
 
-            # Validação: Verificar se o curso existe
-            cursor.execute("SELECT id FROM LucasAntunes_tbcursos WHERE id = %s", (curso_id,))
-            curso_existe = cursor.fetchone()
-            if not curso_existe:
-                return "Erro: O curso selecionado não existe.", 400
-
-            # Inserir aluno no banco de dados
+            # Inserir o aluno no banco de dados
             cursor.execute(
                 "INSERT INTO LucasAntunes_tbalunos (nome, cpf, endereco, senha, curso_id) VALUES (%s, %s, %s, %s, %s)",
                 (nome, cpf, endereco, senha, curso_id)
             )
-            conn.commit()  # Confirmar transação
+            conn.commit()  # Confirmar a transação
 
             return redirect(url_for('alunos'))
 
-        # Consulta para listar alunos
-        cursor.execute("""
-            SELECT 
-                a.id, a.nome, a.cpf, a.endereco, c.nome AS curso_nome
-            FROM LucasAntunes_tbalunos AS a
-            LEFT JOIN LucasAntunes_tbcursos AS c ON a.curso_id = c.id
-        """)
+        # Lógica de busca
+        search = request.args.get('search', '')
+        if search:
+            cursor.execute("""
+                SELECT a.id, a.nome, a.cpf, a.endereco, c.nome AS curso_nome
+                FROM LucasAntunes_tbalunos AS a
+                LEFT JOIN LucasAntunes_tbcursos AS c ON a.curso_id = c.id
+                WHERE a.nome LIKE %s OR a.cpf LIKE %s
+            """, (f"%{search}%", f"%{search}%"))
+        else:
+            cursor.execute("""
+                SELECT a.id, a.nome, a.cpf, a.endereco, c.nome AS curso_nome
+                FROM LucasAntunes_tbalunos AS a
+                LEFT JOIN LucasAntunes_tbcursos AS c ON a.curso_id = c.id
+            """)
         alunos = cursor.fetchall()
 
-        # Consultar lista de cursos para o formulário
+        # Consultar cursos para o formulário
         cursor.execute("SELECT * FROM LucasAntunes_tbcursos")
         cursos = cursor.fetchall()
 
@@ -499,11 +531,10 @@ def alunos():
         conn.rollback()  # Reverter transação em caso de erro
         return f"Erro ao acessar alunos: {e}", 400
     finally:
-        cursor.close()  # Garantir que o cursor seja fechado
-        conn.close()  # Garantir que a conexão seja fechada
+        cursor.close()  # Fecha o cursor
+        conn.close()  # Fecha a conexão
 
-    return render_template('alunos.html', alunos=alunos, cursos=cursos)
-
+    return render_template('alunos.html', alunos=alunos, cursos=cursos, search=search)
 
 @app.route('/alunos/edit/<int:id>', methods=['GET', 'POST'])
 def edit_aluno(id):

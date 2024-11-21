@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<!-- Bloco de Busca -->
+<!-- Campo de busca -->
 <form class="mb-4" method="GET" action="/alunos">
     <div class="input-group">
         <input type="text" class="form-control" name="search" placeholder="Buscar aluno..." value="{{ search }}">
@@ -9,7 +9,7 @@
     </div>
 </form>
 
-<!-- Bloco do Formulário -->
+<!-- Formulário de cadastro de alunos -->
 <div class="card mb-4">
     <div class="card-header bg-primary text-white">
         <h4 class="card-title mb-0">Cadastro de Alunos</h4>
@@ -45,7 +45,7 @@
     </div>
 </div>
 
-<!-- Bloco dos Registros -->
+<!-- Lista de alunos cadastrados -->
 <div class="card">
     <div class="card-header bg-primary text-white">
         <h4 class="card-title mb-0">Alunos Cadastrados</h4>

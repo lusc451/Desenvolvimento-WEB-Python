@@ -1,15 +1,15 @@
 {% extends "base.html" %}
 
 {% block content %}
-<!-- Bloco de Busca -->
+<!-- Campo de busca -->
 <form class="mb-4" method="GET" action="/cursos">
     <div class="input-group">
-        <input type="text" class="form-control" name="search" placeholder="Buscar curso...">
+        <input type="text" class="form-control" name="search" placeholder="Buscar curso..." value="{{ search }}">
         <button class="btn btn-primary" type="submit">Buscar</button>
     </div>
 </form>
 
-<!-- Bloco do Formulário -->
+<!-- Formulário de cadastro de cursos -->
 <div class="card mb-4">
     <div class="card-header bg-primary text-white">
         <h4 class="card-title mb-0">Cadastro de Cursos</h4>
@@ -22,19 +22,19 @@
             </div>
             <div class="mb-3">
                 <label for="disciplinas" class="form-label">Disciplinas</label>
-                <select id="disciplinas" name="disciplinas" class="form-select" multiple>
+                <select multiple class="form-select" id="disciplinas" name="disciplinas">
                     {% for disciplina in disciplinas %}
-                        <option value="{{ disciplina.id }}">{{ disciplina.nome }}</option>
+                    <option value="{{ disciplina.id }}">{{ disciplina.nome }}</option>
                     {% endfor %}
                 </select>
-                <small class="text-muted">Segure Ctrl ou Shift para selecionar várias disciplinas.</small>
+                <small class="form-text text-muted">Segure Ctrl ou Shift para selecionar várias disciplinas.</small>
             </div>
             <button type="submit" class="btn btn-primary">Salvar</button>
         </form>
     </div>
 </div>
 
-<!-- Bloco dos Registros -->
+<!-- Lista de cursos cadastrados -->
 <div class="card">
     <div class="card-header bg-primary text-white">
         <h4 class="card-title mb-0">Cursos Cadastrados</h4>
