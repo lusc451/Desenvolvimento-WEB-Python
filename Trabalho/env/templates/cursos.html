@@ -20,6 +20,15 @@
                 <label for="nome" class="form-label">Nome do Curso</label>
                 <input type="text" class="form-control" id="nome" name="nome" required>
             </div>
+            <div class="mb-3">
+                <label for="disciplinas" class="form-label">Disciplinas</label>
+                <select id="disciplinas" name="disciplinas" class="form-select" multiple>
+                    {% for disciplina in disciplinas %}
+                        <option value="{{ disciplina.id }}">{{ disciplina.nome }}</option>
+                    {% endfor %}
+                </select>
+                <small class="text-muted">Segure Ctrl ou Shift para selecionar várias disciplinas.</small>
+            </div>
             <button type="submit" class="btn btn-primary">Salvar</button>
         </form>
     </div>

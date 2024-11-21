@@ -1,31 +1,43 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="card mb-4">
-    <div class="card-header bg-primary text-white">
-        <h4 class="card-title mb-0">Editar Professor</h4>
-    </div>
-    <div class="card-body">
-        <form method="POST" action="/professores/edit/{{ professor.id }}">
-            <div class="mb-3">
-                <label for="nome" class="form-label">Nome</label>
-                <input type="text" class="form-control" id="nome" name="nome" value="{{ professor.nome }}" required>
-            </div>
-            <div class="mb-3">
-                <label for="telefone" class="form-label">Telefone</label>
-                <input type="text" class="form-control" id="telefone" name="telefone" value="{{ professor.telefone }}">
-            </div>
-            <div class="mb-3">
-                <label for="usuario" class="form-label">Usuário</label>
-                <input type="text" class="form-control" id="usuario" name="usuario" value="{{ professor.usuario }}" required>
-            </div>
-            <div class="mb-3">
-                <label for="senha" class="form-label">Senha</label>
-                <input type="password" class="form-control" id="senha" name="senha" value="{{ professor.senha }}" required>
-            </div>
-            <button type="submit" class="btn btn-primary">Salvar Alterações</button>
-            <a href="/professores" class="btn btn-secondary">Cancelar</a>
-        </form>
+<div class="container mt-4">
+    <h1 class="mb-4">Editar Professor</h1>
+
+    <div class="card">
+        <div class="card-header bg-primary text-white">Editar Professor</div>
+        <div class="card-body">
+            <form method="POST" action="/professores/edit/{{ professor.id }}">
+                <div class="mb-3">
+                    <label for="nome" class="form-label">Nome</label>
+                    <input type="text" name="nome" id="nome" class="form-control" value="{{ professor.nome }}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="telefone" class="form-label">Telefone</label>
+                    <input type="text" name="telefone" id="telefone" class="form-control" value="{{ professor.telefone }}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="usuario" class="form-label">Usuário</label>
+                    <input type="text" name="usuario" id="usuario" class="form-control" value="{{ professor.usuario }}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="senha" class="form-label">Senha</label>
+                    <input type="password" name="senha" id="senha" class="form-control" value="{{ professor.senha }}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="disciplinas" class="form-label">Disciplinas Ministradas</label>
+                    <select name="disciplinas" id="disciplinas" class="form-select" multiple>
+                        {% for disciplina in disciplinas %}
+                        <option value="{{ disciplina.id }}" {% if disciplina.id in professor_disciplinas %}selected{% endif %}>
+                            {{ disciplina.nome }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                <a href="/professores" class="btn btn-secondary">Cancelar</a>
+            </form>
+        </div>
     </div>
 </div>
 {% endblock %}

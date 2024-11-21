@@ -3,12 +3,44 @@
 {% block content %}
 <div class="text-center">
     <h1 class="mb-4">Bem-vindo ao Sistema Acadêmico</h1>
-    <p class="mb-4">Selecione uma das opções abaixo para gerenciar o sistema:</p>
-    <div class="d-flex justify-content-center flex-wrap">
-        <a href="/disciplinas" class="btn btn-primary btn-custom mx-2 my-2">Cadastro de Disciplinas</a>
-        <a href="/cursos" class="btn btn-secondary btn-custom mx-2 my-2">Cadastro de Cursos</a>
-        <a href="/professores" class="btn btn-success btn-custom mx-2 my-2">Cadastro de Professores</a>
-        <a href="/alunos" class="btn btn-warning btn-custom mx-2 my-2">Cadastro de Alunos</a>
+    <p class="mb-4">Gerencie disciplinas, cursos, professores e alunos com facilidade e eficiência.</p>
+    <div class="row justify-content-center">
+        <div class="col-md-3 text-center">
+            <a href="/disciplinas" class="btn btn-primary btn-custom mx-2 my-2">Cadastro de Disciplinas</a>
+            <div class="card bg-primary text-white shadow mt-3">
+                <div class="card-body">
+                    Disciplinas Cadastradas
+                    <h5 class="mt-2">{{ total_disciplinas }}</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 text-center">
+            <a href="/cursos" class="btn btn-secondary btn-custom mx-2 my-2">Cadastro de Cursos</a>
+            <div class="card bg-secondary text-white shadow mt-3">
+                <div class="card-body">
+                    Cursos Cadastrados
+                    <h5 class="mt-2">{{ total_cursos }}</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 text-center">
+            <a href="/professores" class="btn btn-success btn-custom mx-2 my-2">Cadastro de Professores</a>
+            <div class="card bg-success text-white shadow mt-3">
+                <div class="card-body">
+                    Professores Cadastrados
+                    <h5 class="mt-2">{{ total_professores }}</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 text-center">
+            <a href="/alunos" class="btn btn-warning btn-custom mx-2 my-2">Cadastro de Alunos</a>
+            <div class="card bg-warning text-white shadow mt-3">
+                <div class="card-body">
+                    Alunos Cadastrados
+                    <h5 class="mt-2">{{ total_alunos }}</h5>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}
